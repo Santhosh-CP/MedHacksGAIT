@@ -8,10 +8,11 @@ def main():
     df = process_data(df)
     print(df.info())
     print(df.head())
+    print("End")
 
 
 def read_data(files_needed=51):
-    columns = ["Subject-id", "Activity code", "Timestamp", "x", "y", "z"]
+    columns = ["Subject-id", "Activity-code", "Timestamp", "x", "y", "z"]
     folder_name = "wisdm-dataset/raw/watch/accel/"
     dataset = np.array([[]])
     # print(dataset.shape)
@@ -33,9 +34,10 @@ def read_data(files_needed=51):
 
 def process_data(df):
     df['z'] = df['z'].map(lambda x: x.strip(';'))
-    df = df.astype({"Subject-id": int, "Activity code": str, "Timestamp": int, "x": float, "y": float, "z": float})
+    df = df.astype({"Subject-id": int, "Activity-code": str, "Timestamp": int, "x": float, "y": float, "z": float})
     # We are considering only walking data
-    df = df.drop
+    # Walking Data has Activity-code 'A'
+    df = df.drop(df[df["Activity-code"] != "A"].index)
     return df
 
 
